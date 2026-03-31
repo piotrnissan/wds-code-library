@@ -139,3 +139,257 @@ AI is a key consumer of WDS, and unclear integration may result in:
 
 ### Status
 open
+
+
+## Schema & Structure
+
+## Q-008: Formal Schema for Component Contracts
+
+### Problem
+Component Contracts lack a formal, machine-readable schema definition.
+
+### Why it matters
+Without formal schema:
+- validation cannot be automated
+- code generation tools cannot be built
+- downstream systems have no guaranteed contract
+
+### Possible directions
+- JSON Schema
+- TypeScript type definitions with validation
+- Protobuf
+- Custom DSL
+
+### Status
+open
+
+
+## Q-009: Formal Schema for Visual Specification
+
+### Problem
+Visual Specification lacks a formal, machine-readable schema definition.
+
+### Why it matters
+Without formal schema:
+- extraction logic cannot be validated
+- adapters cannot reliably consume visual data
+- transformation consistency cannot be guaranteed
+
+### Possible directions
+- token-based schema (name → resolved value)
+- layered schema (design tokens → mappings → resolved properties)
+- JSON-based with strict typing
+- minimal schema first, extended over time
+
+### Status
+open
+
+
+## Q-010: Machine-Readable Constraint Representation
+
+### Problem
+Constraints are expressed in natural language within contracts; no machine-readable format exists (AD-010 documents this as future concern).
+
+### Why it matters
+Natural language constraints prevent:
+- automated validation
+- conflict detection
+- deterministic constraint resolution
+
+### Possible directions
+- constraint expression language (imperative or declarative)
+- constraint graph with resolution logic
+- rules engine integrated into System Model
+
+### Status
+future
+
+
+## Artefact Relationships
+
+## Q-011: Component Contract and Visual Specification Versioning
+
+### Problem
+Unclear whether Component Contracts and Visual Specifications should be versioned together or independently (AD-009 establishes independent versioning; this question explores implementation).
+
+### Why it matters
+Versioning strategy affects:
+- backward compatibility maintenance
+- deployment coordination
+- change rollout complexity
+
+### Possible directions
+- independent semantic versioning for each
+- coupled versioning (same version for both in a release)
+- component-level versioning with sub-versions for visual/semantic changes
+- timestamp-based or content-hash-based linking
+
+### Status
+open
+
+
+## Q-012: Handling Contract-Specification Drift
+
+### Problem
+Visual Specification and Component Contract may diverge if not synchronized intentionally (AD-009 specifies explicit review required; this explores detection and resolution).
+
+### Why it matters
+Drift can cause:
+- incorrect component rendering
+- confusing developer experience
+- silent failures
+
+### Possible directions
+- automated validation step detecting misalignment
+- migration tooling suggesting required Contract updates
+- governance workflow flagging outdated references
+
+### Status
+open
+
+
+## System Boundaries
+
+## Q-013: Planning Layer Responsibility Boundaries
+
+### Problem
+Exact responsibility boundary between Planning Layer and System Model is not formalized.
+
+### Why it matters
+Unclear boundaries may lead to:
+- duplication of constraint definitions
+- unexpected dependencies
+- role confusion during architecture evolution
+
+### Possible directions
+- Planning defines intent and rules; System Model applies them to visual definitions
+- Planning defines only high-level concepts; System Model handles all details
+- clear separation with explicit handoff criteria
+
+### Status
+open
+
+
+## Q-014: Normalization vs. Resolution in System Model
+
+### Problem
+Whether System Model should only normalize inputs or also resolve conflicts is undefined.
+
+### Why it matters
+Scope affects:
+- when conflicts are detected
+- where transformation logic lives
+- error handling strategy
+
+### Possible directions
+- System Model normalizes only (no conflict resolution; conflicts bubble up)
+- System Model resolves conflicts with predefined rules
+- hybrid: normalizes all inputs, escalates unresolvable conflicts
+
+### Status
+open
+
+
+## Composition Model
+
+## Q-015: Component Composition and Slot Definition
+
+### Problem
+How components compose and how slots are defined and constrained is not yet specified.
+
+### Why it matters
+Composition affects:
+- contract complexity
+- variant explosion
+- system scalability
+
+### Possible directions
+- slot constraints expressed as contract references (must accept component X)
+- content model (slot accepts text, components, mixed)
+- variant constraints on composed components
+
+### Status
+open
+
+
+## Q-016: Contract Cross-References
+
+### Problem
+How Component Contracts reference other components (inheritance, composition, variants) is not formalized.
+
+### Why it matters
+Cross-references affect:
+- circular dependency potential
+- versioning complexity
+- system navigation
+
+### Possible directions
+- explicit component dependency graph
+- versioned references (contract A v2.0 requires component B v1.5+)
+- lazy resolution (references resolved at runtime in adapters)
+
+### Status
+open
+
+
+## Ownership & Lifecycle
+
+## Q-017: Layer Ownership Model
+
+### Problem
+Clear ownership of each architectural layer (Planning, Design, System Model, Contracts, Adapters) is not assigned.
+
+### Why it matters
+Unclear ownership leads to:
+- disputed decisions
+- delayed issue resolution
+- accountability gaps
+
+### Possible directions
+- product/design owns Planning; designers own Design; architect owns System Model; engineers own Adapters
+- cross-functional ownership with clear escalation paths
+- domain-based ownership per component family
+
+### Status
+open
+
+
+## Q-018: Component Lifecycle and States
+
+### Problem
+Lifecycle states (draft, approved, stable, deprecated, removed) and transitions are not defined.
+
+### Why it matters
+Lifecycle clarity affects:
+- when adapters can consume a contract
+- rollout planning
+- breaking change management
+
+### Possible directions
+- draft → approved → stable → deprecated → removed
+- risk-based approval (low-risk changes auto-approve)
+- fast-track for bug fixes vs. feature additions
+
+### Status
+open
+
+
+## Q-019: Conflict Resolution Authority
+
+### Problem
+When Planning Layer and Visual Specification conflict (e.g., semantic rules vs. visual constraints), who decides and how?
+
+### Why it matters
+Unclear authority may lead to:
+- stalled decisions
+- system deadlock
+- inconsistent resolution patterns
+
+### Possible directions
+- System Model has authority (both inputs adapt)
+- Planning has authority (visual spec updates)
+- Visual has authority (planning contracts)
+- human committee review for disputes
+
+### Status
+open

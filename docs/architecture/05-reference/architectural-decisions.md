@@ -141,6 +141,144 @@ This preserves:
 - Building a custom design authoring tool inside WDS
 
 ### Consequences
-+ Clear ownership boundaries  
-+ Reduced coupling to tooling  
-− Requires extraction and synchronization mechanisms  
++ Clear ownership boundaries
++ Reduced coupling to tooling
+− Requires extraction and synchronization mechanisms
+
+
+## AD-007: Terminology Standardization
+
+### Context
+Terms like "System Model," "Component Contract," "Visual Specification," and "Adapter" are used throughout WDS but lack formal, canonical definitions.
+
+### Decision
+Establish explicit, canonical meanings for core terminology to eliminate ambiguity:
+- **System Model**: convergence layer that reconciles Planning input and Visual Specification (AD-005)
+- **Component Contract**: machine-readable artefact defining component semantics and structure (output of System Model)
+- **Visual Specification**: machine-readable artefact defining visual behaviour extracted deterministically from Design Layer (AD-004)
+- **Adapter**: framework-specific or platform-specific implementation that consumes Component Contracts and produces platform code
+
+### Rationale
+Precise terminology ensures:
+- unambiguous communication across teams
+- clear scope boundaries
+- reduced interpretation overhead
+
+### Alternatives Considered
+- Loose terminology with contextual interpretation
+- incorporating terminology into separate glossary (not linked to decisions)
+
+### Consequences
++ Eliminates ambiguity in architecture discussions
++ Clarifies scope of each artefact
+− Requires documentation discipline
+
+
+## AD-008: Canonical System Flow
+
+### Context
+Multiple data flows and transformation stages exist (Planning → Design → System Model → Contracts → Adapters), but the authoritative pipeline is not explicitly defined.
+
+### Decision
+Establish ONE canonical flow:
+1. **Planning Layer**: defines component intent, rules, and constraints (design decisions)
+2. **Design Layer**: defines visual representation in Figma (authoring)
+3. **Visual Specification**: extracted deterministically from Design Layer (AD-004, AD-006)
+4. **System Model**: converges Planning and Visual Spec into unified definition (AD-005)
+5. **Component Contract**: output of System Model, defines final canonical form
+6. **Adapter**: transforms Component Contract for specific platform or framework
+
+### Rationale
+Single authoritative flow ensures:
+- no ambiguity about data origin
+- clear responsibility at each stage
+- unambiguous troubleshooting path
+
+### Alternatives Considered
+- parallel flows with resolution logic
+- context-dependent flows
+
+### Consequences
++ Clear execution path
++ Reduced decision-making during implementation
+− Constraints future flexibility (may need documented exceptions)
+
+
+## AD-009: Contract ↔ Visual Specification Binding
+
+### Context
+Component Contracts and Visual Specifications are separate artefacts (AD-003) but their relationship and synchronization must be formalized.
+
+### Decision
+- Component Contracts contain explicit references to Visual Specification (by version or ID)
+- Visual Specification versions are independent of Component Contract versions
+- Validity rule: if a referenced Visual Spec version is unavailable, the Contract is invalid
+- Migration rule: updating Visual Spec does not automatically update Contract references; explicit review required
+
+### Rationale
+Independent versioning allows:
+- visual fixes without contract semantics changes
+- contract refinements without visual updates
+- clear audit trail of intentional changes
+
+Explicit binding prevents:
+- silent misalignment
+- undocumented cascading changes
+- loss of reproducibility
+
+### Alternatives Considered
+- coupled versioning (one version for both)
+- implicit binding (Contract auto-follows latest Visual Spec)
+
+### Consequences
++ Clear lineage and auditability
++ Reduced unintended side effects
+− Requires coordination workflows
+
+
+## AD-010: Constraint Model Formalization (Future Decision)
+
+### Context
+Constraints (e.g., "slot accepts only text tokens," "variant disabled in mobile") are currently expressed in natural language within contracts.
+
+### Decision
+Natural language constraints are acceptable for current architecture exploration. Future architectural work must establish machine-readable constraint system (formal specification, validation logic, conflict detection).
+
+### Rationale
+Defers full constraint system design until semantic and visual models are stable, while marking this as required for production maturity.
+
+### Alternatives Considered
+- Defining full constraint schema now
+- leaving constraints implicit
+
+### Consequences
++ Unblocks current work
++ Preserves flexibility for constraint design
+− Requires future rework of constraint representation
+
+
+## AD-011: Schema Definition Requirement
+
+### Context
+Component Contracts and Visual Specification are key artefacts but lack formal schemas.
+
+### Decision
+- Component Contract schema is REQUIRED before system maturity
+- Visual Specification schema is REQUIRED before system maturity
+- Schemas must be formal (e.g. JSON Schema, TypeScript, Protobuf), not descriptive documentation
+
+### Rationale
+Formal schemas are necessary for:
+- deterministic validation
+- code generation
+- machine consumption (AI, CMS adapters)
+- tool implementation (extraction, testing)
+
+### Alternatives Considered
+- descriptive documentation only
+- informal schema definition
+
+### Consequences
++ Enables automation and tooling
++ Reduces interpretation errors
+− Significant effort to design and maintain schemas  

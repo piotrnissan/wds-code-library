@@ -124,6 +124,14 @@ Defining component composition, hierarchy, and relationships between elements.
 ### Consistency Enforcement
 Ensuring that all definitions entering contract generation are complete, consistent, and unambiguous.
 
+The System Model may incorporate AI-assisted interpretation and draft generation as a pre-normalization step.
+
+AI operates on raw or partially structured inputs (e.g. Planning and Visual Specification) to propose structured interpretations.
+These outputs are treated as non-authoritative inputs to the System Model.
+
+All AI-assisted outputs must pass deterministic normalization, validation, and consistency enforcement within the System Model before contract generation.
+No AI-generated output is considered part of the canonical system without explicit human approval.
+
 
 ## Non-responsibilities
 

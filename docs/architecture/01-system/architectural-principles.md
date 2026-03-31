@@ -71,6 +71,15 @@ Generation is not considered authoritative — contracts are.
 Human review and automated validation ensure that outputs conform to defined rules and constraints.
 
 
+## Human-in-the-loop decision model
+
+All AI-assisted outputs (such as contract drafts, constraints, or mappings) must require explicit human validation before becoming part of the canonical system.
+
+AI may assist interpretation and generation, but it is not a source of truth.
+
+No AI-produced artefact enters the system without passing deterministic validation and receiving explicit human approval.
+
+
 ## Composability and extensibility
 
 Components are designed to be composable and reusable across contexts.
